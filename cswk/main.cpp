@@ -1,13 +1,14 @@
 
 #include <QtWidgets>
-#include "window.hpp"
-
+#include "dashboard.hpp"
+#include "overview.hpp"
 int main(int argc, char* argv[])
 {
   QApplication app(argc, argv);
 
-  PollutantWindow window;
-  window.show();
-
+  Dashboard dashboard;
+  OverviewPage overviewPage;
+  dashboard.show();
+  overviewPage.show();
   return app.exec();
 }
