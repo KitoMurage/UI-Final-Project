@@ -14,10 +14,10 @@ void PollutantDataset::loadData(const string& filename)
   for (const auto& row: reader) {
     Pollutant pollutant
     {
-      row["pollutant_name"].get<>(),
-      row["time"].get<>(),
-      row["concentration"].get<double>(),
-      row["location"].get<>()
+      row["determinand.label"].get<std::string>(),
+      row["sample.sampleDateTime"].get<std::string>(),
+      row["sample.samplingPoint.label"].get<std::string>(),
+      row["result"].get<double>()
     };
     data.push_back(pollutant);
   }

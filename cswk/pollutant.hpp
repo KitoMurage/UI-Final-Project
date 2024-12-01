@@ -6,7 +6,7 @@
 class Pollutant
 {
   public:
-    Pollutant(const std::string&,const std::string&, const std::string&, double);
+    Pollutant(const std::string&, const std::string&, const std::string&, double);
     std::string getTime() const { return time; }
     std::string getName() const { return name; }
     double getConcentration() const { return concentration; }
