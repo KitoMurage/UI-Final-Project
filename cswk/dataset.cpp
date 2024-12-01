@@ -14,8 +14,8 @@ void PollutantDataset::loadData(const string& filename)
   for (const auto& row: reader) {
     Pollutant pollutant
     {
-      row["determinand.label"].get<std::string>(),
       row["sample.sampleDateTime"].get<std::string>(),
+      row["determinand.label"].get<std::string>(),
       row["sample.samplingPoint.label"].get<std::string>(),
       row["result"].get<double>()
     };
