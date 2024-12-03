@@ -1,96 +1,64 @@
-// COMP2811 Coursework 2 sample solution: main window
-
+#include "window.hpp"
 #include <QtWidgets>
 #include <stdexcept>
 #include <iostream>
-#include "window.hpp"
-#include "stats.hpp"
 
 static const int MIN_WIDTH = 620;
 
-
-PollutantWindow::PollutantWindow(): QMainWindow(), statsDialog(nullptr)
+PollutantWindow::PollutantWindow() : QMainWindow()
 {
-  createMainWidget();
-  //createFileSelectors();
-  createButtons();
-  createToolBar();
-  createStatusBar();
-  addFileMenu();
-  //addHelpMenu();
+    createMainWidget();
+    createToolBar();
+    createStatusBar();
 
-  setMinimumWidth(MIN_WIDTH);
-  setWindowTitle("Pollutant Tool");
+    setMinimumWidth(MIN_WIDTH);
+    setWindowTitle("Pollutant Data Viewer");
 }
-
 
 void PollutantWindow::createMainWidget()
 {
-  table = new QTableView();
-  table->setModel(&model);
+    table = new QTableView();
+    table->setModel(&model);
 
-  QFont tableFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-  table->setFont(tableFont);
+    QFont tableFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    table->setFont(tableFont);
 
-  setCentralWidget(table); 
+    setCentralWidget(table);
 }
-
-
-
-void PollutantWindow::createButtons()
-{
-  loadButton = new QPushButton("Load");
-  connect(loadButton, SIGNAL(clicked()), this, SLOT(openCSV()));
-
-}
-
 
 void PollutantWindow::createToolBar()
 {
-  QToolBar* toolBar = new QToolBar(this);
+    QToolBar* toolBar = new QToolBar(this);
 
-  loadButton = new QPushButton("Load CSV");
-  connect(loadButton, &QPushButton::clicked, this, &PollutantWindow::openCSV);
+    loadButton = new QPushButton("Load CSV");
+    connect(loadButton, &QPushButton::clicked, this, &PollutantWindow::openCSV);
 
-  toolBar->addWidget(loadButton);
-  addToolBar(Qt::TopToolBarArea, toolBar);
+    toolBar->addWidget(loadButton);
+    addToolBar(Qt::TopToolBarArea, toolBar);
 }
-
 
 void PollutantWindow::createStatusBar()
 {
-  fileInfo = new QLabel("Current file: <none>");
-  status->addWidget(fileInfo);
+    fileInfo = new QLabel("Current file: <none>");
+    statusBar()->addWidget(fileInfo);
 }
-
-
 
 void PollutantWindow::openCSV()
 {
-  if (dataLocation == "") {
-    QMessageBox::critical(this, "Data Location Error",
-      "Data location has not been set!\n\n"
-      "You can specify this via the File menu."
-    );
-    return;
-  }
+    QString filename = QFileDialog::getOpenFileName(
+        this, "Open CSV", "", "CSV Files (*.csv)");
 
-  auto filename = QString("%1_%2.csv")
-    .arg(significance->currentText()).arg(period->currentText());
+    if (filename.isEmpty())
+        return;
 
-  auto path = dataLocation + "/" + filename;
-
-  try {
-    model.updateFromFile(path);
-  }
-  catch (const std::exception& error) {
-    QMessageBox::critical(this, "CSV File Error", error.what());
-    return;
-  }
-
-  fileInfo->setText(QString("Current file: <kbd>%1</kbd>").arg(filename));
-  table->resizeColumnsToContents();
-
-  }
+    try
+    {
+        model.updateFromFile(filename);
+        fileInfo->setText(QString("Current file: %1").arg(filename));
+        table->resizeColumnsToContents();
+    }
+    catch (const std::exception& error)
+    {
+        QMessageBox::critical(this, "CSV File Error", error.what());
+    }
 }
-

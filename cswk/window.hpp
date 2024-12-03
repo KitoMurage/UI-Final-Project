@@ -10,25 +10,23 @@ class QPushButton;
 class QTableView;
 
 
-class PollutantWindow: public QMainWindow
+class PollutantWindow : public QMainWindow
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     PollutantWindow();
 
-  private:
+private:
     void createMainWidget();
     void createToolBar();
     void createStatusBar();
 
+    PollutantModel model;   // Data model for pollutant data
+    QTableView* table;      // Table view for pollutant data
+    QLabel* fileInfo;       // Status bar info on the current file
+    QPushButton* loadButton; // Button to load a new CSV file
 
-    PollutantModel model;          // data model used by table
-    QPushButton* loadButton;   // button to load a new CSV file
-    QTableView* table;         // table of quake data
-    QLabel* fileInfo;          // status bar info on current file
-
-
-  private slots:
-    void openCSV();
+private slots:
+    void openCSV(); // Load data from a CSV file
 };

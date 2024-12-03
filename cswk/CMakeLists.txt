@@ -10,6 +10,9 @@ qt_standard_project_setup()
 
 qt_add_executable(cw3
     main.cpp
+    pollutant.cpp
+    model.cpp
+    dataset.cpp 
     dashboard.cpp
     overview.cpp
     window.cpp
