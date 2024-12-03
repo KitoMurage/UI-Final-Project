@@ -47,22 +47,50 @@ void PollutantWindow::createButtons()
 
 void PollutantWindow::createToolBar()
 {
-  QToolBar* toolBar = new QToolBar(this);
-
-  loadButton = new QPushButton("Load CSV");
-  connect(loadButton, &QPushButton::clicked, this, &PollutantWindow::openCSV);
+  QToolBar* toolBar = new QToolBar();
 
   toolBar->addWidget(loadButton);
-  addToolBar(Qt::TopToolBarArea, toolBar);
+
+  addToolBar(Qt::LeftToolBarArea, toolBar);
 }
 
 
 void PollutantWindow::createStatusBar()
 {
   fileInfo = new QLabel("Current file: <none>");
+  QStatusBar* status = statusBar();
   status->addWidget(fileInfo);
 }
 
+
+void PollutantWindow::addFileMenu()
+{
+  QAction* locAction = new QAction("Set Data &Location", this);
+  locAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
+  connect(locAction, SIGNAL(triggered()), this, SLOT(setDataLocation()));
+
+  QAction* closeAction = new QAction("Quit", this);
+  closeAction->setShortcut(QKeySequence::Close);
+  connect(closeAction, SIGNAL(triggered()), this, SLOT(close()));
+
+  QMenu* fileMenu = menuBar()->addMenu("&File");
+  fileMenu->addAction(locAction);
+  fileMenu->addAction(closeAction);
+}
+
+
+
+
+void PollutantWindow::setDataLocation()
+{
+  QString directory = QFileDialog::getExistingDirectory(
+    this, "Data Location", ".",
+    QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+  if (directory.length() > 0) {
+    dataLocation = directory;
+  }
+}
 
 
 void PollutantWindow::openCSV()
@@ -94,3 +122,11 @@ void PollutantWindow::openCSV()
   }
 }
 
+
+void PollutantWindow::about()
+{
+  QMessageBox::about(this, "About Pollutant Tool",
+    "This tool displays and analyzes pollutant data loaded from a CSV file"
+    "///.\n\n"
+    "(c) {}");
+}

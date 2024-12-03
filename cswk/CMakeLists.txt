@@ -12,6 +12,7 @@ qt_add_executable(cw3
     main.cpp
     dashboard.cpp
     overview.cpp
+    window.cpp
 )
 
 target_link_libraries(cw3 PRIVATE Qt6::Widgets)
