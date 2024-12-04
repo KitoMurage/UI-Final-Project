@@ -16,7 +16,7 @@ class PollutantModel: public QAbstractTableModel
     QVariant data(const QModelIndex&, int) const;
     QVariant headerData(int, Qt::Orientation, int) const;
 
-}
+
 
   private:
     PollutantDataset dataset;
