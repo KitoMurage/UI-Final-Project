@@ -17,7 +17,9 @@ void PollutantDataset::loadData(const string& filename)
       row["sample.sampleDateTime"].get<std::string>(),
       row["determinand.label"].get<std::string>(),
       row["sample.samplingPoint.label"].get<std::string>(),
-      row["result"].get<double>()
+      row["result"].get<double>(),
+      row["resultQualifier.notation"].get<std::string>(),
+      row["determinand.unit.label"].get<std::string>()   
     };
     data.push_back(pollutant);
   }

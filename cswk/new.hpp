@@ -1,9 +1,9 @@
+// COMP2811 Coursework 2 sample solution: main window
 
 #pragma once
 
 #include <QMainWindow>
 #include "model.hpp"
-
 
 class QString;
 class QComboBox;
@@ -11,30 +11,28 @@ class QLabel;
 class QPushButton;
 class QTableView;
 class StatsDialog;
+class QWidget;
 
-class PollutantWindow: public QMainWindow
+class OverviewPage: public QWidget;
 {
   Q_OBJECT
 
   public:
-    PollutantWindow();
+    explicit OverviewPage(QWidget *parent = nullptr);
 
   private:
-    void createMainWidget();
-    void createButtons();
-    void createToolBar();
-    void createStatusBar();
-    void addFileMenu();
+    void createSearchBar();
+    void displayData();
+    void createTable();
+    void setLayout();
 
-    PollutantModel model;          // data model used by table
-    QString dataLocation;      // location of CSV data files
-    QPushButton* loadButton;   // button to load a new CSV file
-    QTableView* table;         // table of quake data
-    QLabel* fileInfo;          // status bar info on current file
+
+
+    PollutantModel model;
+    QLineEdit* searchBar;
+    QTableView* table;
 
 
   private slots:
-    void setDataLocation();
-    void openCSV();
-    void about();
+    void filterTable(const QString& searchText);
 };
