@@ -1,4 +1,4 @@
-#include "overview.hpp"
+#include "pop.hpp"
 #include <QHBoxLayout>
 #include <QFont>
 
