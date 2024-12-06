@@ -18,13 +18,13 @@ POPPage::POPPage(QWidget *parent) : QWidget(parent) {
     titleLabel->setFont(titleFont);
     
     QLabel *healthRiskLabel = new QLabel("Health Risks:");
-    descriptionLabel->setWordWrap(true);
+    healthRiskLabel->setWordWrap(true);
 
     QLabel *monitoringLabel = new QLabel("Monitoring Importance:");
-    descriptionLabel->setWordWrap(true);
+    monitortingLabel->setWordWrap(true);
 
     QLabel *safetyLabel = new QLabel("Safety Levels:");
-    descriptionLabel->setWordWrap(true);
+    safetyLabel->setWordWrap(true);
 
     mainLayout->addWidget(titleLabel);
     mainLayout->addWidget(healthRiskLabel);
