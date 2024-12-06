@@ -6,9 +6,9 @@
 #include <QVBoxLayout>
 #include <QProgressBar>
 
-class POP_Page : public QWidget {
+class POPPage : public QWidget {
     Q_OBJECT
 
 public:
-    explicit POP_Page(QWidget *parent = nullptr);
+    explicit POPPage(QWidget *parent = nullptr);
 };

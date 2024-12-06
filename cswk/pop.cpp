@@ -2,7 +2,7 @@
 #include <QHBoxLayout>
 #include <QFont>
 
-POP_Page::POP_Page(QWidget *parent) : QWidget(parent) {
+POPPage::POPPage(QWidget *parent) : QWidget(parent) {
     // Main layout
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
