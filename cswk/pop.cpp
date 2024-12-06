@@ -21,7 +21,7 @@ POPPage::POPPage(QWidget *parent) : QWidget(parent) {
     healthRiskLabel->setWordWrap(true);
 
     QLabel *monitoringLabel = new QLabel("Monitoring Importance:");
-    monitortingLabel->setWordWrap(true);
+    monitoringLabel->setWordWrap(true);
 
     QLabel *safetyLabel = new QLabel("Safety Levels:");
     safetyLabel->setWordWrap(true);
