@@ -17,6 +17,7 @@ qt_add_executable(cw3
     overview.cpp
     window.cpp
     pop.cpp
+    Compliance.cpp
 )
 
 target_link_libraries(cw3 PRIVATE Qt6::Widgets)
