@@ -20,6 +20,11 @@ POPPage::POPPage(QWidget *parent) : QWidget(parent) {
     QLabel *healthRiskLabel = new QLabel("Health Risks:");
     healthRiskLabel->setWordWrap(true);
 
+    QPushButton *healthRiskLabel = new QPushButton("Learn more about Health Risks");
+    mainLayout->addWidget(healthRiskLabel);
+
+    connect(healthRiskLabel, &QPushButton::clicked, this, &POPPage::HealthRiskPopup)
+
     QLabel *monitoringLabel = new QLabel("Monitoring Importance:");
     monitoringLabel->setWordWrap(true);
 
@@ -36,4 +41,12 @@ POPPage::POPPage(QWidget *parent) : QWidget(parent) {
     dataRepresentation->setValue(50);
 
     mainLayout->addWidget(dataRepresentation);
+}
+
+void POPPage::HealthRiskPopup() {
+    QMessageBox::information(this, "Health Risks of POPs",
+        "Persistent Organic Pollutants (POPs) are toxic chemicals that persist in the environment, "
+        "bioaccumulate in the food chain, and are linked to serious health risks such as cancer, "
+        "reproductive disorders, immune system damage, and endocrine disruption. Long-term exposure, "
+        "even at low levels, poses significant threats to both human health and ecosystems.");
 }

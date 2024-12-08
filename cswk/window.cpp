@@ -62,3 +62,5 @@ void PollutantWindow::openCSV()
         QMessageBox::critical(this, "CSV File Error", error.what());
     }
 }
+
+
