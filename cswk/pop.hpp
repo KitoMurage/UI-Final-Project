@@ -13,5 +13,5 @@ public:
     explicit POPPage(QWidget *parent = nullptr);
 
 private slots:
-    void showHealthRiskPopup(); 
+    void HealthRiskPopup(); 
 };
