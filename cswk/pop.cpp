@@ -20,18 +20,18 @@ POPPage::POPPage(QWidget *parent) : QWidget(parent) {
     titleLabel->setFont(titleFont);
     
 
-    QPushButton *healthRiskButton = new QPushButton("Learn more about Health Risks");
+    QPushButton *healthRiskButton = new QPushButton("Health Risks");
     connect(healthRiskButton, &QPushButton::clicked, this, &POPPage::HealthRiskPopup);
 
-    QLabel *monitoringLabel = new QLabel("Monitoring Importance:");
-    monitoringLabel->setWordWrap(true);
+    QPushButton *MonitoringButton = new QPushButton("Monitoring Importance");
+    connect(MonitoringButton, &QPushButton::clicked, this, &POPPage::MonitoringPopup);
 
     QLabel *safetyLabel = new QLabel("Safety Levels:");
     safetyLabel->setWordWrap(true);
 
     mainLayout->addWidget(titleLabel);
     mainLayout->addWidget(healthRiskButton);
-    mainLayout->addWidget(monitoringLabel);
+    mainLayout->addWidget(MonitoringButton);
     mainLayout->addWidget(safetyLabel);
 
     // Data representation
@@ -47,4 +47,11 @@ void POPPage::HealthRiskPopup() {
         "bioaccumulate in the food chain, and are linked to serious health risks such as cancer, "
         "reproductive disorders, immune system damage, and endocrine disruption. Long-term exposure, "
         "even at low levels, poses significant threats to both human health and ecosystems.");
+}
+
+void POPPage::MonitoringPopup() {
+    QMessageBox::information(this, "Monitoring Importance of POPs",
+        "Monitoring Persistent Organic Pollutants (POPs) is vital for understanding their environmental and health impacts, "
+        "enabling the development of policies to reduce their presence and prevent further harm. "
+        "By providing essential data on POP exposure, monitoring supports informed decision-making for a cleaner, healthier, and more sustainable future.");
 }

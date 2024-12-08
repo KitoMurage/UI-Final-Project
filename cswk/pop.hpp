@@ -14,4 +14,5 @@ public:
 
 private slots:
     void HealthRiskPopup(); 
+    void MonitoringPopup(); 
 };
