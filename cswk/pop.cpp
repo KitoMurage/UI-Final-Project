@@ -19,11 +19,8 @@ POPPage::POPPage(QWidget *parent) : QWidget(parent) {
     titleFont.setPointSize(24);
     titleLabel->setFont(titleFont);
     
-    QLabel *healthRiskLabel = new QLabel("Health Risks:");
-    healthRiskLabel->setWordWrap(true);
 
     QPushButton *healthRiskButton = new QPushButton("Learn more about Health Risks");
-
     connect(healthRiskButton, &QPushButton::clicked, this, &POPPage::HealthRiskPopup);
 
     QLabel *monitoringLabel = new QLabel("Monitoring Importance:");
@@ -33,7 +30,6 @@ POPPage::POPPage(QWidget *parent) : QWidget(parent) {
     safetyLabel->setWordWrap(true);
 
     mainLayout->addWidget(titleLabel);
-    mainLayout->addWidget(healthRiskLabel);
     mainLayout->addWidget(healthRiskButton);
     mainLayout->addWidget(monitoringLabel);
     mainLayout->addWidget(safetyLabel);
