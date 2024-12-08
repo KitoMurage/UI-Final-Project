@@ -24,7 +24,7 @@ POPPage::POPPage(QWidget *parent) : QWidget(parent) {
 
     QPushButton *healthRiskButton = new QPushButton("Learn more about Health Risks");
 
-    connect(healthRiskButton, &QPushButton::clicked, this, &POPPage::HealthRiskPopup)
+    connect(healthRiskButton, &QPushButton::clicked, this, &POPPage::HealthRiskPopup);
 
     QLabel *monitoringLabel = new QLabel("Monitoring Importance:");
     monitoringLabel->setWordWrap(true);
