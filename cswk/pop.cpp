@@ -1,5 +1,7 @@
 #include "pop.hpp"
 #include <QHBoxLayout>
+#include <QPushButton>
+#include <QMessageBox>
 #include <QFont>
 
 POPPage::POPPage(QWidget *parent) : QWidget(parent) {
@@ -20,10 +22,9 @@ POPPage::POPPage(QWidget *parent) : QWidget(parent) {
     QLabel *healthRiskLabel = new QLabel("Health Risks:");
     healthRiskLabel->setWordWrap(true);
 
-    QPushButton *healthRiskLabel = new QPushButton("Learn more about Health Risks");
-    mainLayout->addWidget(healthRiskLabel);
+    QPushButton *healthRiskButton = new QPushButton("Learn more about Health Risks");
 
-    connect(healthRiskLabel, &QPushButton::clicked, this, &POPPage::HealthRiskPopup)
+    connect(healthRiskButton, &QPushButton::clicked, this, &POPPage::HealthRiskPopup)
 
     QLabel *monitoringLabel = new QLabel("Monitoring Importance:");
     monitoringLabel->setWordWrap(true);
@@ -33,6 +34,7 @@ POPPage::POPPage(QWidget *parent) : QWidget(parent) {
 
     mainLayout->addWidget(titleLabel);
     mainLayout->addWidget(healthRiskLabel);
+    mainLayout->addWidget(healthRiskButton);
     mainLayout->addWidget(monitoringLabel);
     mainLayout->addWidget(safetyLabel);
 
