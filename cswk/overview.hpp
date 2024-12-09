@@ -1,14 +1,21 @@
 #pragma once
 
 #include <QWidget>
+#include <QTableView>
 #include <QLineEdit>
-#include <QLabel>
-#include <QVBoxLayout>
-#include <QProgressBar>
+#include "model.hpp"
 
-class OverviewPage : public QWidget {
+class OverviewPage : public QWidget
+{
     Q_OBJECT
 
 public:
     explicit OverviewPage(QWidget *parent = nullptr);
+    void loadCSV();
+    void searchPollutant();
+
+private:
+    QTableView *dataView;
+    QLineEdit *searchBox;
+    PollutantModel model;
 };

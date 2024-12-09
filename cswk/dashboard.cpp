@@ -49,29 +49,76 @@ Dashboard::Dashboard(QWidget *parent) : QWidget(parent) {
     QVBoxLayout *dashboardLayout = new QVBoxLayout(dashboardPage);
 
     // Card layout
+    
     QGridLayout *contentLayout = new QGridLayout();
-    for (int i = 0; i < 4; ++i) {
-        QFrame *card = new QFrame();
-        card->setFrameShape(QFrame::StyledPanel);
-        card->setFrameShadow(QFrame::Raised);
 
-        QVBoxLayout *cardLayout = new QVBoxLayout(card);
+    // Overview
+    QFrame *overviewCard = new QFrame();
+    overviewCard->setFrameShape(QFrame::StyledPanel);
+    overviewCard->setFrameShadow(QFrame::Raised);
 
-        QLabel *cardTitle = new QLabel(QString("Card %1 Title").arg(i + 1));
-        cardTitle->setFont(titleFont);
+    QVBoxLayout *overviewLayout = new QVBoxLayout(overviewCard);
 
-        QLabel *cardDescription = new QLabel("This is a description of the card.");
-        cardDescription->setWordWrap(true);
+    QLabel *overviewTitle = new QLabel("Overview");
+    overviewTitle->setFont(titleFont);
 
-        QProgressBar *dataRepresentation = new QProgressBar();
-        dataRepresentation->setValue((i + 1) * 20);
+    QLabel *overviewDescription = new QLabel("This card provides a summary of overall pollutant data.");
+    overviewDescription->setWordWrap(true);
 
-        cardLayout->addWidget(cardTitle);
-        cardLayout->addWidget(cardDescription);
-        cardLayout->addWidget(dataRepresentation);
+    QProgressBar *overviewProgress = new QProgressBar();
+    overviewProgress->setValue(60);  // Example value
 
-        contentLayout->addWidget(card, i / 2, i % 2);
-    }
+    overviewLayout->addWidget(overviewTitle);
+    overviewLayout->addWidget(overviewDescription);
+    overviewLayout->addWidget(overviewProgress);
+
+    contentLayout->addWidget(overviewCard, 0, 0);
+
+    // POP
+    QFrame *popCard = new QFrame();
+    popCard->setFrameShape(QFrame::StyledPanel);
+    popCard->setFrameShadow(QFrame::Raised);
+
+    QVBoxLayout *popLayout = new QVBoxLayout(popCard);
+
+    QLabel *popTitle = new QLabel("POP (Persistent Organic Pollutants)");
+    popTitle->setFont(titleFont);
+
+    QLabel *popDescription = new QLabel("Details about persistent organic pollutants");
+    popDescription->setWordWrap(true);
+
+    QProgressBar *popProgress = new QProgressBar();
+    popProgress->setValue(40);  // Example value
+
+    popLayout->addWidget(popTitle);
+    popLayout->addWidget(popDescription);
+    popLayout->addWidget(popProgress);
+
+    contentLayout->addWidget(popCard, 0, 1);
+
+    // Compliance
+    QFrame *complianceCard = new QFrame();
+    complianceCard->setFrameShape(QFrame::StyledPanel);
+    complianceCard->setFrameShadow(QFrame::Raised);
+
+    QVBoxLayout *complianceLayout = new QVBoxLayout(complianceCard);
+
+    QLabel *complianceTitle = new QLabel("Compliance");
+    complianceTitle->setFont(titleFont);
+
+    QLabel *complianceDescription = new QLabel("Track compliance levels.");
+    complianceDescription->setWordWrap(true);
+
+    QProgressBar *complianceProgress = new QProgressBar();
+    complianceProgress->setValue(80);  // Example value
+
+    complianceLayout->addWidget(complianceTitle);
+    complianceLayout->addWidget(complianceDescription);
+    complianceLayout->addWidget(complianceProgress);
+
+    contentLayout->addWidget(complianceCard, 1, 0);
+
+
     dashboardLayout->addLayout(contentLayout);
     stackedWidget->addWidget(dashboardPage);   
     
