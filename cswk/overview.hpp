@@ -20,7 +20,7 @@ private slots:
 private:
     QTableView *dataView;
     QLineEdit *searchBox;
-    QChartView *chartView; // Added for displaying the chart
-    QVBoxLayout *mainLayout; // Layout for arranging widgets
-    PollutantModel model; // Data model for the table and chart
+    QChartView *chartView; 
+    QVBoxLayout *mainLayout; 
+    PollutantModel model;
 };
