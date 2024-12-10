@@ -162,7 +162,7 @@ void OverviewPage::searchPollutant() {
             } else if (concentration > dangerLevel) {
                 color = Qt::red; // danger level
             } else {
-                color = QColorConstants::Svg::orange
+                color = QColorConstants::Svg::orange;
             }
 
             QScatterSeries *scatter = new QScatterSeries();
