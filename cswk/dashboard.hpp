@@ -17,6 +17,11 @@ class Dashboard : public QWidget {
 public:
     explicit Dashboard(QWidget *parent = nullptr);
 
+private slots:
+    void HelpPopup();
+    void SourcesPopup();
+    void AboutPopup();
+
 private:
     // Navigation buttons links
     QPushButton *navLink0;  
