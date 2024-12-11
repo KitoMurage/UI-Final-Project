@@ -244,10 +244,11 @@ void Dashboard::HelpPopup() {
     QMessageBox::information(this, tr("Help"), tr("Contact us for more info on how to use the app, or if you find any difficulties. email: watermonitoring@gmail.com."));
 }
 
-void Dashboard::SourcesPopup() {
-    QMessageBox::information(this, tr("Sources"), tr("https://environment.data.gov.uk/water-quality/view/\n, 
-    https://www.unep.org/topics/chemicals-and-pollution-action/pollution-and-health/persistent-organic-pollutants"));
+void Dashboard::SourcesPopup() {QMessageBox::information(
+    this, tr("Sources"),tr("https://environment.data.gov.uk/water-quality/view/\n"
+       "https://www.unep.org/topics/chemicals-and-pollution-action/pollution-and-health/persistent-organic-pollutants"));
 }
+
 
 void Dashboard::AboutPopup() {
     QMessageBox::about(this, tr("About Pollutant Monitoring"),
