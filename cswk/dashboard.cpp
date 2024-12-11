@@ -245,7 +245,8 @@ void Dashboard::HelpPopup() {
 }
 
 void Dashboard::SourcesPopup() {
-    QMessageBox::information(this, tr("Sources"), tr("https://environment.data.gov.uk/water-quality/view/"));
+    QMessageBox::information(this, tr("Sources"), tr("https://environment.data.gov.uk/water-quality/view/\n, 
+    https://www.unep.org/topics/chemicals-and-pollution-action/pollution-and-health/persistent-organic-pollutants"));
 }
 
 void Dashboard::AboutPopup() {

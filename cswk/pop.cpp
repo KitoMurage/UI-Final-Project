@@ -74,14 +74,14 @@ void POPPage::HealthRiskPopup() {
         tr("Persistent Organic Pollutants (POPs) are toxic chemicals that persist in the environment, "
            "bioaccumulate in the food chain, and are linked to serious health risks such as cancer, "
            "reproductive disorders, immune system damage, and endocrine disruption. Long-term exposure, "
-           "even at low levels, poses significant threats to both human health and ecosystems."));
+           "even at low levels, poses significant threats to both human health and ecosystems. (UNEP, 2024)"));
 }
 
 void POPPage::MonitoringPopup() {
     QMessageBox::information(this, tr("Monitoring Importance of POPs"),
         tr("Monitoring Persistent Organic Pollutants (POPs) is vital for understanding their environmental and health impacts, "
            "enabling the development of policies to reduce their presence and prevent further harm. "
-           "By providing essential data on POP exposure, monitoring supports informed decision-making for a cleaner, healthier, and more sustainable future."));
+           "By providing essential data on POP exposure, monitoring supports informed decision-making for a cleaner, healthier, and more sustainable future. (UNEP, 2024)"));
 }
 
 void POPPage::loadCSV() {
