@@ -2,8 +2,8 @@
 
 - **Team Members**:
     - Shaikha Mohamed Al Slais - Student ID: 201659913
-    - Juri Hamed Al Subhi - Student ID: 201778857
-    - Kito Magu - Student ID: 
+    - Juri Hamed Alsubhi - Student ID: 201778857
+    - Kito Magu - Student ID: 201739649
 
 - **Project Overview**:
     This application, built using Qt, is designed to monitor and track UK and EU water quality data. It provides data visualization through charts, making it easier to understand trends and patterns. Users can filter specific pollutants and evaluate their safety levels, as well as filter data by location to assess compliance with regulations.
@@ -27,21 +27,12 @@
       ```
 
 - **File Structure**:
-    - This folder consists of 2 files, 
-        - the data file which has 5 CSV files from 2020-2024 in Yorkshire. Any of these files can be chosen from to load. 
-        - the translation file has the ts and qm of the spanish, en gb and en languages and their qm in order for the language  to be changed depending on the user's local settings
-        - main.cpp runs the application
-        - the rest are the CMakeLists.txt and the pages cpp and hpp folders including models
-        - 
+    - **Folders**:
+        - **data** - Contains 5 CSV files with water quality data from Yorkshire, spanning the years 2020 to 2024. These files can be selected to load data into the application.
+        - **translation** - Includes .ts and .qm files for language support (Spanish, English (GB), and English (US)). These files enable the application to change languages based on the user's system settings.
 
+    - **Main Files**:
+        - **main.cpp**: The entry point of the application, responsible for running the program.
+        - **CMakeLists.txt**: The build configuration file for compiling the application.
 
-
-**README File** (`README.md`):
-    - Include a **detailed README** in Markdown format with the following information:
-        - **Team Members**: Full names and student IDs of each team member.
-        - **Project Overview**: Brief description of the application, its purpose, and main features.
-        - **Setup Instructions**: Step-by-step guide on how to compile, configure, and run the application on the FEPS Red Hat system.
-        - **Dependencies**: List all libraries and dependencies required, including any setup steps if additional libraries beyond the standard Qt installation are needed.
-        - **File Structure**: Outline the main structure of the application folder, explaining key folders and files.
-        - **Known Issues**: Any known limitations or unresolved bugs should be documented in this section.
-
+     - **Page Files**: - Includes all .cpp and .hpp files for the dashboard, overview, POP, dataset, pollutant, model, and window components.
