@@ -3,7 +3,7 @@
 - **Team Members**:
     - Shaikha Mohamed Al Slais - Student ID: 201659913
     - Juri Hamed Alsubhi - Student ID: 201778857
-    - Kito Magu - Student ID: 201739649
+    - Kito Murage Magu - Student ID: 201739649
 
 - **Project Overview**:
     This application, built using Qt, is designed to monitor and track UK and EU water quality data. It provides data visualization through charts, making it easier to understand trends and patterns. Users can filter specific pollutants and evaluate their safety levels, as well as filter data by location to assess compliance with regulations.
