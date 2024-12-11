@@ -160,7 +160,7 @@ Dashboard::Dashboard(QWidget *parent) : QWidget(parent) {
     stackedWidget->addWidget(popPage);  // Index 2
 
     // Compliance Page
-    Compliance *compliancePage = new Compliance();
+    CompliancePage *compliancePage = new CompliancePage();
     stackedWidget->addWidget(compliancePage);  // Index 3
 
     // Dataset Page
