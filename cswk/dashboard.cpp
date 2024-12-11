@@ -6,11 +6,13 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QStackedWidget>
+#include <QFrame>
 #include <QLabel>
 #include <QComboBox>
 #include <QPushButton>
 #include <QFont>
 #include <QMessageBox>
+#include <QGridLayout>
 #include <QProgressBar>
 
 Dashboard::Dashboard(QWidget *parent) : QWidget(parent) {
@@ -19,20 +21,17 @@ Dashboard::Dashboard(QWidget *parent) : QWidget(parent) {
 
     // Header layout
     QHBoxLayout *headerLayout = new QHBoxLayout();
-    QLabel *titleLabel = new QLabel("Dashboard");
+    QLabel *titleLabel = new QLabel(tr("Dashboard"));
     QFont titleFont;
     titleFont.setPointSize(18);
     titleFont.setBold(true);
     titleLabel->setFont(titleFont);
 
-    QComboBox *languageComboBox = new QComboBox();
-    languageComboBox->addItems({"English", "French", "Spanish"});
-
-    QPushButton *navLink0 = new QPushButton("Dashboard");
-    QPushButton *navLink1 = new QPushButton("Overview");
-    QPushButton *navLink2 = new QPushButton("POP");
-    QPushButton *navLink3 = new QPushButton("Compliance");
-    QPushButton *navLink4 = new QPushButton("Dataset");
+    QPushButton *navLink0 = new QPushButton(tr("Dashboard"));
+    QPushButton *navLink1 = new QPushButton(tr("Overview"));
+    QPushButton *navLink2 = new QPushButton(tr("POP"));
+    QPushButton *navLink3 = new QPushButton(tr("Compliance"));
+    QPushButton *navLink4 = new QPushButton(tr("Dataset"));
     navLink0->setCursor(Qt::PointingHandCursor);
     navLink1->setCursor(Qt::PointingHandCursor);
     navLink2->setCursor(Qt::PointingHandCursor);
@@ -46,7 +45,15 @@ Dashboard::Dashboard(QWidget *parent) : QWidget(parent) {
     headerLayout->addWidget(navLink2);
     headerLayout->addWidget(navLink3);
     headerLayout->addWidget(navLink4);
-    headerLayout->addWidget(languageComboBox);
+
+    //Welcome message
+    QLabel *welcomeLabel = new QLabel("Welcome to the Pollutant Monitoring Dashbaord! Explore water quality data and insights in the Yorkshire region");
+    welcomeLabel->setAlignment(Qt::AlignCenter);
+    QFont welcomeFont;
+    welcomeFont.setPointSize(16);
+    welcomeFont.setBold(true);
+    welcomeLabel->setFont(welcomeFont);
+    welcomeLabel->setStyleSheet("color: black;");
 
     // To switch between pages
     QStackedWidget *stackedWidget = new QStackedWidget(this);
@@ -62,19 +69,17 @@ Dashboard::Dashboard(QWidget *parent) : QWidget(parent) {
     QFrame *overviewCard = new QFrame();
     overviewCard->setFrameShape(QFrame::StyledPanel);
     overviewCard->setFrameShadow(QFrame::Raised);
+    overviewCard->setStyleSheet("background-color: lightblue; border: 2px solid navy; border-radius: 10px;");
 
     QVBoxLayout *overviewLayout = new QVBoxLayout(overviewCard);
 
-    QLabel *overviewTitle = new QLabel("Overview");
+    QLabel *overviewTitle = new QLabel(tr("Overview"));
     overviewTitle->setFont(titleFont);
 
-    QLabel *overviewDescription = new QLabel("This card provides a summary of overall pollutant data.");
+    QLabel *overviewDescription = new QLabel(tr("This card provides a summary of overall pollutant data."));
     overviewDescription->setWordWrap(true);
 
-    //QProgressBar *overviewProgress = new QProgressBar();
-    //overviewProgress->setValue(60); // Example value
-
-    QPushButton *overviewButton = new QPushButton("View Page");
+    QPushButton *overviewButton = new QPushButton(tr("View Page"));
     overviewButton->setCursor(Qt::PointingHandCursor);
     overviewButton->setStyleSheet("border: none; color: black; text-decoration: underline;");
 
@@ -92,19 +97,18 @@ Dashboard::Dashboard(QWidget *parent) : QWidget(parent) {
     QFrame *popCard = new QFrame();
     popCard->setFrameShape(QFrame::StyledPanel);
     popCard->setFrameShadow(QFrame::Raised);
+    popCard->setStyleSheet("background-color: pink; border: 2px solid red; border-radius: 10px;");
+
 
     QVBoxLayout *popLayout = new QVBoxLayout(popCard);
 
-    QLabel *popTitle = new QLabel("POP (Persistent Organic Pollutants)");
+    QLabel *popTitle = new QLabel(tr("POP (Persistent Organic Pollutants)"));
     popTitle->setFont(titleFont);
 
-    QLabel *popDescription = new QLabel("Details about persistent organic pollutants.");
+    QLabel *popDescription = new QLabel(tr("Details about persistent organic pollutants."));
     popDescription->setWordWrap(true);
 
-    //QProgressBar *popProgress = new QProgressBar();
-    //popProgress->setValue(40); // Example value
-
-    QPushButton *popButton = new QPushButton("View Page");
+    QPushButton *popButton = new QPushButton(tr("View Page"));
     popButton->setCursor(Qt::PointingHandCursor);
     popButton->setStyleSheet("border: none; color: black; text-decoration: underline;");
 
@@ -122,31 +126,55 @@ Dashboard::Dashboard(QWidget *parent) : QWidget(parent) {
     QFrame *complianceCard = new QFrame();
     complianceCard->setFrameShape(QFrame::StyledPanel);
     complianceCard->setFrameShadow(QFrame::Raised);
+    complianceCard->setStyleSheet("background-color: lightgreen; border: 2px solid green; border-radius: 10px;");
+
 
     QVBoxLayout *complianceLayout = new QVBoxLayout(complianceCard);
 
-    QLabel *complianceTitle = new QLabel("Compliance");
+    QLabel *complianceTitle = new QLabel(tr("Compliance"));
     complianceTitle->setFont(titleFont);
 
-    QLabel *complianceDescription = new QLabel("Track compliance levels.");
+    QLabel *complianceDescription = new QLabel(tr("Track compliance levels."));
     complianceDescription->setWordWrap(true);
 
-    //QProgressBar *complianceProgress = new QProgressBar();
-    //complianceProgress->setValue(80); // Example value
-
-    QPushButton *complianceButton = new QPushButton("View Page");
+    QPushButton *complianceButton = new QPushButton(tr("View Page"));
     complianceButton->setCursor(Qt::PointingHandCursor);
     complianceButton->setStyleSheet("border: none; color: black; text-decoration: underline;");
 
     complianceLayout->addWidget(complianceTitle);
     complianceLayout->addWidget(complianceDescription);
-    //complianceLayout->addWidget(complianceProgress);
     complianceLayout->addWidget(complianceButton);
 
     contentLayout->addWidget(complianceCard, 1, 0);
 
     // Connect the button to navigate to the Compliance page
     connect(complianceButton, &QPushButton::clicked, [=]() { stackedWidget->setCurrentIndex(3); });
+
+    //DataSet Card
+    QFrame *dataSetCard = new QFrame();
+    dataSetCard->setFrameShape(QFrame::StyledPanel);
+    dataSetCard->setFrameShadow(QFrame::Raised);
+    dataSetCard->setStyleSheet("background-color: yellow; border: 2px solid orange; border-radius: 10px;");
+
+    QVBoxLayout *dataSetLayout = new QVBoxLayout(dataSetCard);
+
+    QLabel *dataSetTitle = new QLabel(tr("Dataset"));
+    dataSetTitle->setFont(titleFont);
+
+    QLabel *dataSetDescription = new QLabel(tr("Explore the detailed dataset. "));
+    dataSetDescription->setWordWrap(true);
+
+    QPushButton *dataSetButton = new QPushButton(tr("View Page"));
+    dataSetButton->setCursor(Qt::PointingHandCursor);
+    dataSetButton->setStyleSheet("border: none; color: black; text-decoration: underline;");
+
+    dataSetLayout->addWidget(dataSetTitle);
+    dataSetLayout->addWidget(dataSetDescription);
+    dataSetLayout->addWidget(dataSetButton);
+
+    contentLayout->addWidget(dataSetCard, 1, 1);
+
+    connect(dataSetButton, &QPushButton::clicked, [=]() { stackedWidget->setCurrentIndex(4); });
 
     dashboardLayout->addLayout(contentLayout);
     stackedWidget->addWidget(dashboardPage);   
@@ -169,22 +197,22 @@ Dashboard::Dashboard(QWidget *parent) : QWidget(parent) {
 
     // Footer
     QVBoxLayout *footerLayout = new QVBoxLayout();
-    QLabel *footerLabel = new QLabel("Pollutant Monitoring Yorkshire");
+    QLabel *footerLabel = new QLabel(tr("Pollutant Monitoring Yorkshire"));
 
     // Create a horizontal layout for the footer buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
-    QPushButton *HelpButton = new QPushButton("Help", this);
+    QPushButton *HelpButton = new QPushButton(tr("Help"), this);
     connect(HelpButton, &QPushButton::clicked, this, &Dashboard::HelpPopup);
     HelpButton->setCursor(Qt::PointingHandCursor);
     HelpButton->setStyleSheet("border: none; color: black; text-decoration: underline;");
 
 
-    QPushButton *SourcesButton = new QPushButton("Sources", this);
+    QPushButton *SourcesButton = new QPushButton(tr("Sources"), this);
     connect(SourcesButton, &QPushButton::clicked, this, &Dashboard::SourcesPopup);
     SourcesButton->setCursor(Qt::PointingHandCursor);
     SourcesButton->setStyleSheet("border: none; color: black; text-decoration: underline;");
 
-    QPushButton *AboutButton = new QPushButton("About", this);
+    QPushButton *AboutButton = new QPushButton(tr("About"), this);
     connect(AboutButton, &QPushButton::clicked, this, &Dashboard::AboutPopup);
     AboutButton->setCursor(Qt::PointingHandCursor);
     AboutButton->setStyleSheet("border: none; color: black; text-decoration: underline;");
@@ -213,16 +241,16 @@ Dashboard::Dashboard(QWidget *parent) : QWidget(parent) {
 }
 
 void Dashboard::HelpPopup() {
-    QMessageBox::information(this, "Help", "This is the help message.");
+    QMessageBox::information(this, tr("Help"), tr("Contact us for more info on how to use the app, or if you find any difficulties. email: watermonitoring@gmail.com."));
 }
 
 void Dashboard::SourcesPopup() {
-    QMessageBox::information(this, "Sources", "https://environment.data.gov.uk/water-quality/view/");
+    QMessageBox::information(this, tr("Sources"), tr("https://environment.data.gov.uk/water-quality/view/"));
 }
 
 void Dashboard::AboutPopup() {
-    QMessageBox::about(this, "About Pollutant Monitoring",
-    "Displays and analyzes water quality data in the area of Yorkshire loaded from"
-    "a CSV file produced by the Department for Environment Food & Rural Affairs.\n\n"
-    "(c) 2024");
+    QMessageBox::about(this, tr("About Pollutant Monitoring"),
+        tr("Displays and analyzes water quality data in the area of Yorkshire loaded from"
+           "a CSV file produced by the Department for Environment Food & Rural Affairs.\n\n"
+           "(c) 2024"));
 }

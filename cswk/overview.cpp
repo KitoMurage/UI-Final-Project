@@ -5,6 +5,8 @@
 #include <QMessageBox>
 #include <QHeaderView>
 #include <QToolTip>
+#include <QFrame>
+#include <QLabel>
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QValueAxis>
@@ -15,6 +17,23 @@
 OverviewPage::OverviewPage(QWidget *parent) : QWidget(parent) {
     mainLayout = new QVBoxLayout(this);
 
+    QFrame *frame = new QFrame();
+    frame -> setFrameShape(QFrame::StyledPanel);
+    frame->setFrameShadow(QFrame::Raised);
+    frame->setStyleSheet("background-color: lightblue; border: 2px solid navy; border-radius: 10px;");
+
+    QVBoxLayout *frameLayout = new QVBoxLayout(frame);
+    
+    QLabel *label = new QLabel("Overview Page Content");
+    QFont font;
+    font.setPointSize(16);
+    font.setBold(true);
+    label->setFont(font);
+    label->setAlignment(Qt::AlignCenter);
+
+    frameLayout->addWidget(label);
+    mainLayout->addWidget(frame);
+
     //displaying dataset
     dataView = new QTableView(this);
     dataView->setModel(&model);
@@ -22,20 +41,20 @@ OverviewPage::OverviewPage(QWidget *parent) : QWidget(parent) {
 
     // search button
     searchBox = new QLineEdit(this);
-    searchBox->setPlaceholderText("Enter pollutant name to search");
+    searchBox->setPlaceholderText(tr("Enter pollutant name to search"));
 
-    QPushButton *searchButton = new QPushButton("Search", this);
+    QPushButton *searchButton = new QPushButton(tr("Search"), this);
     connect(searchButton, &QPushButton::clicked, this, &OverviewPage::searchPollutant);
 
     QHBoxLayout *searchLayout = new QHBoxLayout();
     searchLayout->addWidget(searchBox);
     searchLayout->addWidget(searchButton);
 
-    // load button and help button
-    QPushButton *loadCSVButton = new QPushButton("Load CSV", this);
+    // Load button and help button
+    QPushButton *loadCSVButton = new QPushButton(tr("Load CSV"), this);
     connect(loadCSVButton, &QPushButton::clicked, this, &OverviewPage::loadCSV);
 
-    QPushButton *HelpButton = new QPushButton("Help", this);
+    QPushButton *HelpButton = new QPushButton(tr("Help"), this);
     connect(HelpButton, &QPushButton::clicked, this, &OverviewPage::SearchPopup);
 
     QHBoxLayout *buttonLayout = new QHBoxLayout();
@@ -55,30 +74,32 @@ OverviewPage::OverviewPage(QWidget *parent) : QWidget(parent) {
 
 
 void OverviewPage::loadCSV() {
-    QString filename = QFileDialog::getOpenFileName(this, "Open CSV", "", "CSV Files (*.csv)");
+    QString filename = QFileDialog::getOpenFileName(this, tr("Open CSV"), "", tr("CSV Files (*.csv)"));
 
     if (!filename.isEmpty()) {
         try {
             model.updateFromFile(filename);
             dataView->reset(); 
-            QMessageBox::information(this, "Success", "CSV file loaded successfully.");
+            QMessageBox::information(this, tr("Success"), tr("CSV file loaded successfully."));
         } catch (const std::exception &e) {
-            QMessageBox::critical(this, "Error", e.what());
+            QMessageBox::critical(this, tr("Error"), tr(e.what()));
         }
     }
 }
+
 void OverviewPage::SearchPopup() {
-    QMessageBox::information(this, "Valid Pollutants for this search",
-        "The valid list of high risk pollutants for this page include: "
-        "'Nitrate-N' 'Phosphate' 'Mercury - Hg' 'Lead - as Pb' 'Chloroform'"
-        ", Please enter the pollutant in the search exactly as shown");
+    QMessageBox::information(this, tr("Valid Pollutants for this search"),
+        tr("The valid list of high-risk pollutants for this page includes: "
+           "'Nitrate-N', 'Phosphate', 'Mercury - Hg', 'Lead - as Pb', 'Chloroform'. "
+           "Please enter the pollutant in the search exactly as shown."));
 }
+
 
 void OverviewPage::searchPollutant() {
     QString searchTerm = searchBox->text().trimmed();
 
     if (searchTerm.isEmpty()) {
-        QMessageBox::information(this, "Search", "Please enter a pollutant name to search.");
+        QMessageBox::information(this, tr("Search"), tr("Please enter a pollutant name to search."));
         return;
     }
 
@@ -131,17 +152,17 @@ void OverviewPage::searchPollutant() {
     if (found) {
         QChart *chart = new QChart();
         chart->addSeries(series);
-        chart->setTitle("Concentration Over Time for " + searchTerm);
+        chart->setTitle(tr("Concentration Over Time for %1").arg(searchTerm));
 
         // Customize axes
         QDateTimeAxis *xAxis = new QDateTimeAxis();
         xAxis->setFormat("dd MMM yyyy hh:mm:ss");
-        xAxis->setTitleText("Time");
+        xAxis->setTitleText(tr("Time"));
         chart->addAxis(xAxis, Qt::AlignBottom);
         series->attachAxis(xAxis);
 
         QValueAxis *yAxis = new QValueAxis();
-        yAxis->setTitleText("Concentration");
+        yAxis->setTitleText(tr("Concentration"));
         yAxis->setLabelFormat("%.2f");
         chart->addAxis(yAxis, Qt::AlignLeft);
         series->attachAxis(yAxis);
@@ -171,14 +192,15 @@ void OverviewPage::searchPollutant() {
             if (state) { // Show tooltip only when hovering
                 QString riskLevel;
                 if (concentration < safeLevel) {
-                    riskLevel = "Safe";
+                    riskLevel = tr("Safe");
                 } else if (concentration > dangerLevel) {
-                    riskLevel = "Danger";
-                } else{
-                    riskLevel = "Caution";
+                    riskLevel = tr("Danger");
+                } else {
+                    riskLevel = tr("Caution");
                 }
 
-                QString message = "Concentration: " + QString::number(concentration) + "\nRisk Level: " + riskLevel;
+
+                QString message = tr("Concentration: ") + QString::number(concentration) + tr("\nRisk Level: ") + riskLevel;
                 QToolTip::showText(QCursor::pos(), message);
             } else {
                 QToolTip::hideText(); // Hide tooltip when not hovering
@@ -199,6 +221,6 @@ void OverviewPage::searchPollutant() {
         }
         chartView->setVisible(true);
     } else {
-        QMessageBox::information(this, "Search Result", "No data found for the specified pollutant.");
+        QMessageBox::information(this, tr("Search Result"), tr("No data found for the specified pollutant."));
     }
 }

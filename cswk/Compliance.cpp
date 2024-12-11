@@ -11,13 +11,33 @@
 #include <QtCharts/QPieSlice>
 #include <QToolTip>
 #include <QComboBox>
+#include <QFrame>
+#include <QLabel>
+
 
 CompliancePage::CompliancePage(QWidget *parent) : QWidget(parent) {
     // Main layout
     mainLayout = new QVBoxLayout(this);
 
+    QFrame *frame = new QFrame();
+    frame->setFrameShape(QFrame::StyledPanel);
+    frame->setFrameShadow(QFrame::Raised);
+    frame->setStyleSheet("background-color: lightgreen; border: 2px solid green; border-radius: 10px;");
+
+    QVBoxLayout *frameLayout = new QVBoxLayout(frame);
+
+    QLabel *label = new QLabel("Compliance Page Content");
+    QFont font;
+    font.setPointSize(16);
+    font.setBold(true);
+    label->setFont(font);
+    label->setAlignment(Qt::AlignCenter);
+
+    frameLayout->addWidget(label);
+    mainLayout->addWidget(frame);
+
     // Title
-    QLabel *title = new QLabel("Compliance Dashboard");
+    QLabel *title = new QLabel(tr("Compliance Dashboard"));
     QFont titleFont;
     titleFont.setPointSize(20);
     titleFont.setBold(true);
@@ -27,28 +47,33 @@ CompliancePage::CompliancePage(QWidget *parent) : QWidget(parent) {
 
     // Filters
     pollutantFilter = new QComboBox(this);
-    pollutantFilter->addItems({"All pollutants", "Nitrate-N", "Phosphate", "Mercury - Hg", "Lead - as Pb", "Chloroform", 
-    "PCB", "PFAS", "Acrylamide", "Antimony"});
-    QLabel *pollutantLabel = new QLabel("Filter by Pollutant:");
+    pollutantFilter->addItems({
+        tr("All pollutants"), tr("Nitrate-N"), tr("Phosphate"), tr("Mercury - Hg"), tr("Lead - as Pb"),
+        tr("Chloroform"), tr("PCB"), tr("PFAS"), tr("Acrylamide"), tr("Antimony")
+    });
+    QLabel *pollutantLabel = new QLabel(tr("Filter by Pollutant:"));
     mainLayout->addWidget(pollutantLabel);
     mainLayout->addWidget(pollutantFilter);
 
     locationFilter = new QComboBox(this);
-    locationFilter->addItems({"All locations", "HAY-A-PARK LAKE AT SURFACE WATER OUTFALL", "MALHAM TARN", 
-    "WASTE ADHOC - TEMPLEBOROUGH", "WASTE ADHOC - LEEDS OFFICES", "CRAGS LANE FARM RICHMOND 4415", 
-    "SORREL SYKES FARM FREMINGTON 4465", "SWINITHWAITE HALL 4461 LEYBURN"});
-    QLabel *locationLabel = new QLabel("Filter by Location:");
+    locationFilter->addItems({
+        tr("All locations"), tr("HAY-A-PARK LAKE AT SURFACE WATER OUTFALL"), tr("MALHAM TARN"),
+        tr("WASTE ADHOC - TEMPLEBOROUGH"), tr("WASTE ADHOC - LEEDS OFFICES"), 
+        tr("CRAGS LANE FARM RICHMOND 4415"), tr("SORREL SYKES FARM FREMINGTON 4465"),
+        tr("SWINITHWAITE HALL 4461 LEYBURN")
+    });
+    QLabel *locationLabel = new QLabel(tr("Filter by Location:"));
     mainLayout->addWidget(locationLabel);
     mainLayout->addWidget(locationFilter);
 
-    QPushButton *applyFiltersButton = new QPushButton("Apply Filters", this);
+    QPushButton *applyFiltersButton = new QPushButton(tr("Apply Filters"), this);
     connect(applyFiltersButton, &QPushButton::clicked, this, &CompliancePage::applyFilters);
     mainLayout->addWidget(applyFiltersButton);
 
-    QPushButton *loadCSVButton = new QPushButton("Load CSV", this);
+    QPushButton *loadCSVButton = new QPushButton(tr("Load CSV"), this);
     connect(loadCSVButton, &QPushButton::clicked, this, &CompliancePage::loadCSV);
 
-    QPushButton *NoncompliantButton = new QPushButton("Non-compliant Sites", this);
+    QPushButton *NoncompliantButton = new QPushButton(tr("Non-compliant Sites"), this);
     connect(NoncompliantButton, &QPushButton::clicked, this, &CompliancePage::NonCompliantPopup);
 
     QHBoxLayout *buttonLayout = new QHBoxLayout();
@@ -64,14 +89,14 @@ CompliancePage::CompliancePage(QWidget *parent) : QWidget(parent) {
     }
 
 void CompliancePage::loadCSV() {
-    QString filename = QFileDialog::getOpenFileName(this, "Open CSV", "", "CSV Files (*.csv)");
+    QString filename = QFileDialog::getOpenFileName(this, tr("Open CSV"), "", tr("CSV Files (*.csv)"));
 
     if (!filename.isEmpty()) {
         try {
             model.updateFromFile(filename);
-            QMessageBox::information(this, "Success", "CSV file loaded successfully.");
+            QMessageBox::information(this, tr("Success"), tr("CSV file loaded successfully."));
         } catch (const std::exception &e) {
-            QMessageBox::critical(this, "Error", e.what());
+            QMessageBox::critical(this, tr("Error"), tr(e.what()));
         }
     }
 }
@@ -194,25 +219,26 @@ void CompliancePage::applyFilters() {
 
     // Create pie chart
     QPieSeries *series = new QPieSeries();
-    series->append("Safe", safeCount);
-    series->append("Caution", cautionCount);
-    series->append("Non-Compliant", nonCompliantCount);
+    series->append(tr("Safe"), safeCount);
+    series->append(tr("Caution"), cautionCount);
+    series->append(tr("Non-Compliant"), nonCompliantCount);
+
 
     // design the slices of the pie chart
     QPieSlice *safeSlice = series->slices().at(0);
     safeSlice->setBrush(Qt::green);
-    safeSlice->setLabel(QString("Safe: %1").arg(safeCount));
+    safeSlice->setLabel(tr("Safe: %1").arg(safeCount));
 
     QPieSlice *cautionSlice = series->slices().at(1);
     cautionSlice->setBrush(Qt::yellow);
-    cautionSlice->setLabel(QString("Caution: %1").arg(cautionCount));
+    cautionSlice->setLabel(tr("Caution: %1").arg(cautionCount));
 
     QPieSlice *nonCompliantSlice = series->slices().at(2);
     nonCompliantSlice->setBrush(Qt::red);
-    nonCompliantSlice->setLabel(QString("Non-Compliant: %1").arg(nonCompliantCount));
+    nonCompliantSlice->setLabel(tr("Non-Compliant: %1").arg(nonCompliantCount));
 
     QChart *chart = new QChart();
-    chart->setTitle("Compliance Levels");
+    chart->setTitle(tr("Compliance Levels"));
     chart->addSeries(series); //add all the series we created, safe, caution, and non-compliant
     chart->legend()->setAlignment(Qt::AlignBottom);
 
@@ -228,14 +254,15 @@ void CompliancePage::applyFilters() {
 
 
 void CompliancePage::NonCompliantPopup() {
-    QMessageBox::information(this, "NonCompliant", "Possible causes for non-compliance:\n"
-                        "- Urban Development: Increased urbanization can lead to pollution from sewage, stormwater runoff, and waste.\n"
-                        "- Industrial Discharges: Improper disposal of industrial waste can lead to heavy metals (e.g., lead, mercury) and chemical pollutants in the water\n"
-                        "- Agricultural Runoff: Fertilizers and pesticides used in farming can introduce chemicals such as nitrates, phosphates, and pesticides into water sources.\n"
-                        "- Natural geological factors in the region.\n\n"
-                        "Historical trends:\n"
-                        "- Certain locations may repeatedly fail compliance due to chronic problems such as poor infrastructure, proximity to pollution sources, or recurring operational challenges.\n"
-                        "- Seasonal Variability: mon-compliance may spike during specific times of the year:\n"
-                        "-Spring/Summer: Increased agricultural runoff during planting and harvesting seasons.\n"
-                        "-Rainy Seasons: Flooding can introduce additional contaminants or dilute water quality");
+    QMessageBox::information(this, tr("Non-Compliant Sites"), 
+        tr("Possible causes for non-compliance:\n"
+           "- Urban Development: Increased urbanization can lead to pollution from sewage, stormwater runoff, and waste.\n"
+           "- Industrial Discharges: Improper disposal of industrial waste can lead to heavy metals (e.g., lead, mercury) and chemical pollutants in the water.\n"
+           "- Agricultural Runoff: Fertilizers and pesticides used in farming can introduce chemicals such as nitrates, phosphates, and pesticides into water sources.\n"
+           "- Natural geological factors in the region.\n\n"
+           "Historical trends:\n"
+           "- Certain locations may repeatedly fail compliance due to chronic problems such as poor infrastructure, proximity to pollution sources, or recurring operational challenges.\n"
+           "- Seasonal Variability: Non-compliance may spike during specific times of the year:\n"
+           "-Spring/Summer: Increased agricultural runoff during planting and harvesting seasons.\n"
+           "-Rainy Seasons: Flooding can introduce additional contaminants or dilute water quality."));
 }

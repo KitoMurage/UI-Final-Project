@@ -29,4 +29,5 @@ private:
     QPushButton *navLink2;  
     QPushButton *navLink3;  
     QPushButton *navLink4; 
+    QComboBox *languageComboBox;
 };

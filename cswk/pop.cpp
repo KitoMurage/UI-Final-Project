@@ -3,10 +3,29 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QFont>
+#include <QFrame>
+#include <QLabel>
 
 POPPage::POPPage(QWidget *parent) : QWidget(parent) {
     // Main layout
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
+    QFrame *frame = new QFrame();
+    frame->setFrameShape(QFrame::StyledPanel);
+    frame->setFrameShadow(QFrame::Raised);
+    frame->setStyleSheet("background-color: pink; border: 2px solid red; border-radius: 10px;");
+
+    QVBoxLayout *frameLayout = new QVBoxLayout(frame);
+
+    QLabel *label = new QLabel("POP Page Content");
+    QFont font;
+    font.setPointSize(16);
+    font.setBold(true);
+    label->setFont(font);
+    label->setAlignment(Qt::AlignCenter);
+
+    frameLayout->addWidget(label);
+    mainLayout->addWidget(frame);
 
     // Header
     QHBoxLayout *headerLayout = new QHBoxLayout();
@@ -14,22 +33,22 @@ POPPage::POPPage(QWidget *parent) : QWidget(parent) {
     mainLayout->addLayout(headerLayout);
 
     // Title Label
-    QLabel *titleLabel = new QLabel("Persistant Organic Pollutants");
+    QLabel *titleLabel = new QLabel(tr("Persistent Organic Pollutants"));
     QFont titleFont;
     titleFont.setPointSize(24);
     titleLabel->setFont(titleFont);
 
     //Load CSV File button
-    QPushButton *loadCSVButton = new QPushButton("Load CSV");
+    QPushButton *loadCSVButton = new QPushButton(tr("Load CSV"));
     connect(loadCSVButton, &QPushButton::clicked, this, &POPPage::loadCSV);
 
     fileInfo = new QLabel("Current file: <none>");
 
     //Health Risks and Monitoring Buttons
-    QPushButton *healthRiskButton = new QPushButton("Health Risks");
+    QPushButton *healthRiskButton = new QPushButton(tr("Health Risks"));
     connect(healthRiskButton, &QPushButton::clicked, this, &POPPage::HealthRiskPopup);
 
-    QPushButton *MonitoringButton = new QPushButton("Monitoring Importance");
+    QPushButton *MonitoringButton = new QPushButton(tr("Monitoring Importance"));
     connect(MonitoringButton, &QPushButton::clicked, this, &POPPage::MonitoringPopup);
 
     //charts view
@@ -51,24 +70,22 @@ POPPage::POPPage(QWidget *parent) : QWidget(parent) {
 
 
 void POPPage::HealthRiskPopup() {
-    QMessageBox::information(this, "Health Risks of POPs",
-        "Persistent Organic Pollutants (POPs) are toxic chemicals that persist in the environment, "
-        "bioaccumulate in the food chain, and are linked to serious health risks such as cancer, "
-        "reproductive disorders, immune system damage, and endocrine disruption. Long-term exposure, "
-        "even at low levels, poses significant threats to both human health and ecosystems.");
+    QMessageBox::information(this, tr("Health Risks of POPs"),
+        tr("Persistent Organic Pollutants (POPs) are toxic chemicals that persist in the environment, "
+           "bioaccumulate in the food chain, and are linked to serious health risks such as cancer, "
+           "reproductive disorders, immune system damage, and endocrine disruption. Long-term exposure, "
+           "even at low levels, poses significant threats to both human health and ecosystems."));
 }
 
 void POPPage::MonitoringPopup() {
-    QMessageBox::information(this, "Monitoring Importance of POPs",
-        "Monitoring Persistent Organic Pollutants (POPs) is vital for understanding their environmental and health impacts, "
-        "enabling the development of policies to reduce their presence and prevent further harm. "
-        "By providing essential data on POP exposure, monitoring supports informed decision-making for a cleaner, healthier, and more sustainable future.");
+    QMessageBox::information(this, tr("Monitoring Importance of POPs"),
+        tr("Monitoring Persistent Organic Pollutants (POPs) is vital for understanding their environmental and health impacts, "
+           "enabling the development of policies to reduce their presence and prevent further harm. "
+           "By providing essential data on POP exposure, monitoring supports informed decision-making for a cleaner, healthier, and more sustainable future."));
 }
 
-void POPPage::loadCSV()
-{
-    QString filename = QFileDialog::getOpenFileName(
-        this, "Open CSV", "", "CSV Files (*.csv)");
+void POPPage::loadCSV() {
+    QString filename = QFileDialog::getOpenFileName(this, tr("Open CSV"), "", tr("CSV Files (*.csv)"));
 
     if (filename.isEmpty())
         return;
@@ -76,12 +93,12 @@ void POPPage::loadCSV()
     try
     {
         model.updateFromFile(filename);
-        fileInfo->setText(QString("Current file: %1").arg(filename));
+        fileInfo->setText(tr("Current file: %1").arg(filename));
         createPOPChart();
     }
     catch (const std::exception& error)
     {
-        QMessageBox::critical(this, "CSV File Error", error.what());
+        QMessageBox::critical(this, tr("CSV File Error"), tr(error.what()));
     }
 }
 
@@ -216,16 +233,16 @@ void POPPage::createPOPChart() {
             if (state) { // Show tooltip only when hovering
                 QString riskLevel;
                 if (concentration < safeLevel) {
-                    riskLevel = "Safe";
+                    riskLevel = tr("Safe");
                 } else if (concentration < cautionLevel) {
-                    riskLevel = "Caution";
+                    riskLevel = tr("Caution");
                 } else if (concentration > dangerLevel) {
-                    riskLevel = "Danger";
+                    riskLevel = tr("Danger");
                 } else {
-                    riskLevel = "Risk";
+                    riskLevel = tr("Risk");
                 }
 
-                QString message = "Pollutant: " + pollutantName + "\nConcentration: " + QString::number(concentration) + "\nRisk Level: " + riskLevel;
+                QString message = tr("Pollutant: ") + pollutantName + tr("\nConcentration: ") + QString::number(concentration) + tr("\nRisk Level: ") + riskLevel;
                 QToolTip::showText(QCursor::pos(), message);
             } else {
                 QToolTip::hideText(); // Hide tooltip when not hovering
