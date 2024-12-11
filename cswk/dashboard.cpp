@@ -76,7 +76,7 @@ Dashboard::Dashboard(QWidget *parent) : QWidget(parent) {
     QLabel *overviewTitle = new QLabel(tr("Overview"));
     overviewTitle->setFont(titleFont);
 
-    QLabel *overviewDescription = new QLabel(tr("This card provides a summary of overall pollutant data."));
+    QLabel *overviewDescription = new QLabel(tr("Have an overview on high risk pollutants including Nitrate-N, Phosphate, Mercury - Hg, Lead - as Pb, and Chloroform."));
     overviewDescription->setWordWrap(true);
 
     QPushButton *overviewButton = new QPushButton(tr("View Page"));
@@ -105,7 +105,7 @@ Dashboard::Dashboard(QWidget *parent) : QWidget(parent) {
     QLabel *popTitle = new QLabel(tr("POP (Persistent Organic Pollutants)"));
     popTitle->setFont(titleFont);
 
-    QLabel *popDescription = new QLabel(tr("Details about persistent organic pollutants."));
+    QLabel *popDescription = new QLabel(tr("Details about persistent organic pollutants, explore more about the toxic chemicals in the environment."));
     popDescription->setWordWrap(true);
 
     QPushButton *popButton = new QPushButton(tr("View Page"));
@@ -134,7 +134,7 @@ Dashboard::Dashboard(QWidget *parent) : QWidget(parent) {
     QLabel *complianceTitle = new QLabel(tr("Compliance"));
     complianceTitle->setFont(titleFont);
 
-    QLabel *complianceDescription = new QLabel(tr("Track compliance levels."));
+    QLabel *complianceDescription = new QLabel(tr("Track compliance levels to ensure the saftey of the location you are in and monitor other pollutant's.."));
     complianceDescription->setWordWrap(true);
 
     QPushButton *complianceButton = new QPushButton(tr("View Page"));
@@ -161,7 +161,7 @@ Dashboard::Dashboard(QWidget *parent) : QWidget(parent) {
     QLabel *dataSetTitle = new QLabel(tr("Dataset"));
     dataSetTitle->setFont(titleFont);
 
-    QLabel *dataSetDescription = new QLabel(tr("Explore the detailed dataset. "));
+    QLabel *dataSetDescription = new QLabel(tr("Explore the detailed dataset here in this page! "));
     dataSetDescription->setWordWrap(true);
 
     QPushButton *dataSetButton = new QPushButton(tr("View Page"));
