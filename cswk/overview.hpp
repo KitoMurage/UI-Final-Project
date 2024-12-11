@@ -23,4 +23,5 @@ private:
     QChartView *chartView; 
     QVBoxLayout *mainLayout; 
     PollutantModel model;
+    
 };

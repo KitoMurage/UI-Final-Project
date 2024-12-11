@@ -32,7 +32,9 @@ POPPage::POPPage(QWidget *parent) : QWidget(parent) {
     QPushButton *MonitoringButton = new QPushButton("Monitoring Importance");
     connect(MonitoringButton, &QPushButton::clicked, this, &POPPage::MonitoringPopup);
 
-    createPOPChart(); //creats the chart
+    //charts view
+    chartView = new QChartView(this);
+    chartView->setVisible(false);
 
     QHBoxLayout *filterLayout = new QHBoxLayout(); //layout to place buttons side by side
     filterLayout->addWidget(loadCSVButton);
@@ -75,7 +77,7 @@ void POPPage::loadCSV()
     {
         model.updateFromFile(filename);
         fileInfo->setText(QString("Current file: %1").arg(filename));
-        updateChart();
+        createPOPChart();
     }
     catch (const std::exception& error)
     {
@@ -83,65 +85,166 @@ void POPPage::loadCSV()
     }
 }
 
-void POPPage::updateChart() {
-    QChart *chart = chartView->chart();
-    chart->removeAllSeries();  // Clear the current chart
-
- 
-    QLineSeries *series = new QLineSeries(); //create a new lineseries to present data in line graphs
-
-    //loops over all the data from the getPOPData which has all the data
-    for (const auto &data : getPOPData()) 
-    { 
-        QDateTime dateTime = QDateTime::fromString(data.time, Qt::ISODate); //converts the string into QDateTime
-        series->append(dateTime.toMSecsSinceEpoch(), data.concentration); //adds the string to the series we have
-    }
-
-    chart->addSeries(series); //add the series to the chart
-   
-    // Recreate and attach axes
-    //The x-axis of the graph will represent the date/time
-    auto *xAxis = new QDateTimeAxis();
-    xAxis->setTickCount(10);
-    xAxis->setFormat("dd MMM yyyy");
-    xAxis->setTitleText("Date");
-    chart->addAxis(xAxis, Qt::AlignBottom); //adds the x axis to the bottom of the chart
-    series->attachAxis(xAxis); //links the x axis with the series we have
-
-    //The y-axis will be the concentration level 
-    auto *yAxis = new QValueAxis();
-    yAxis->setTitleText("Concentration");
-    yAxis->setLabelFormat("%.2f");
-    chart->addAxis(yAxis, Qt::AlignLeft); //adds the y axis to the left of the chart
-    series->attachAxis(yAxis); //links the y axis with the series we have
-
-    chart->setTitle("POP Levels Over Time"); //title of the chart
-    chartView->update(); //update the whole chart at the end
-}
-
 void POPPage::createPOPChart() {
+    //list of all pop pollutants 
+    QStringList validCompounds = { "Aldrin", "Chlordane-tr", "Dieldrin", "Endosulphan", "Endrin", "Heptachlor", 
+   "HEXACHLORO 1", "Hexachlorobnz", "PCBs", "DDT(PP)", "PFOS", "PCB Con 028", "PCB Con 138", "PCB Con 118", "PCB Con 101", 
+   "PCB Con 153", "PCB Con 180", "PCB Con 052", "PCB Con 156", "PCB Con 105"};
+
     QChart *chart = new QChart();
     chart->setTitle("POP Levels Over Time"); //creates a title for the chart once it has been created
+   
+    QLineSeries *series = new QLineSeries(); //create a new line series to present data in line graphs
+    bool found=false;
 
-    chartView = new QChartView(chart); //creates a chart view
-}
+    // Define concentration thresholds for color-coding
+    double safeLevel = 0.0, cautionLevel = 0.0, dangerLevel = 0.0;
+    // Define thresholds based on the pollutant 
+    if (pollutant == "Aldrin") {
+        safeLevel = 50.0;
+        cautionLevel = safeLevel * 1.5; 
+        dangerLevel = safeLevel * 3.0;  
+    }  else if (pollutant == "Chlordane-tr") {
+        safeLevel = 50.0;
+        cautionLevel = safeLevel * 1.5;
+        dangerLevel = safeLevel * 3.0;  
+    } else if (pollutant == "Dieldrin") {
+        safeLevel = 50.0;
+        cautionLevel = safeLevel * 1.5; 
+        dangerLevel = safeLevel * 3.0;  
+    } else if (pollutant == "Endosulphan") {
+        safeLevel = 50.0;
+        cautionLevel = safeLevel * 1.5; 
+        dangerLevel = safeLevel * 3.0; 
+    } else if (pollutant == "Endrin") {
+        safeLevel = 50.0;
+        cautionLevel = safeLevel * 1.5; 
+        dangerLevel = safeLevel * 3.0; 
+    } else if (pollutant == "Heptachlor") {
+        safeLevel = 50.0;
+        cautionLevel = safeLevel * 1.5;
+        dangerLevel = safeLevel * 3.0;  
+    } else if (pollutant == "HEXACHLORO 1") {
+        safeLevel = 100.0;
+        cautionLevel = safeLevel * 1.5; 
+        dangerLevel = safeLevel * 3.0;  
+    } else if (pollutant == "Hexachlorobnz") {
+        safeLevel = 50.0;
+        cautionLevel = safeLevel * 1.5; 
+        dangerLevel = safeLevel * 3.0;  
+    } else if (pollutant == "PCBs") {
+        safeLevel = 50.0;
+        cautionLevel = safeLevel * 1.5; 
+        dangerLevel = safeLevel * 3.0;  
+    } else if (pollutant == "DDT(PP)") {
+        safeLevel = 50.0;
+        cautionLevel = safeLevel * 1.5;
+        dangerLevel = safeLevel * 3.0;
+    }else if (pollutant == "PFOS") {
+        safeLevel = 50.0;
+        cautionLevel = safeLevel * 1.5; 
+        dangerLevel = safeLevel * 3.0;  
+    }else if (pollutant == "PCB Con 028" || pollutant == "PCB Con 138" || pollutant == "PCB Con 118" || pollutant == "PCB Con 101" || 
+        pollutant == "PCB Con 153" || pollutant =="PCB Con 180" || pollutant == "PCB Con 052" || pollutant == "PCB Con 156" || pollutant == "PCB Con 105") {
+        safeLevel = 50.0;
+        cautionLevel = safeLevel * 1.5; 
+        dangerLevel = safeLevel * 3.0;  
+    }
 
-//to retrieve data from the model 
-std::vector<POPData> POPPage::getPOPData() {
-    std::vector<POPData> popData;
+    QStringList pollutantNames; 
+    // Iterate through the rows to find the matching pollutant and append data to the series
+    for (int row = 0; row < model.rowCount(QModelIndex()); ++row) {
+        QString pollutant = model.data(model.index(row, 1), Qt::DisplayRole).toString();
 
-    //looops through each row of the model 
-    for (int i = 0; i < model.rowCount(QModelIndex()); ++i) {
-        QString name = model.data(model.index(i, 1), Qt::DisplayRole).toString();
-        //checks if the name has PCB Con in it, if it does it takes the time, concentration, and location of the whole row andstore it 
-        if (name.contains("PCB Con")) {
-            POPData data;
-            data.time = model.data(model.index(i, 0), Qt::DisplayRole).toString();
-            data.concentration = model.data(model.index(i, 2), Qt::DisplayRole).toDouble();
-            data.location = model.data(model.index(i, 3), Qt::DisplayRole).toString();
-            popData.push_back(data);
+        // Filter data for "PCB Con"
+        if (validCompounds.contains(pollutant, Qt::CaseInsensitive)) {            
+            QString timeData = model.data(model.index(row, 0), Qt::DisplayRole).toString();
+            double concentration = model.data(model.index(row, 2), Qt::DisplayRole).toDouble();
+            QString location = model.data(model.index(row, 3), Qt::DisplayRole).toString(); 
+            QDateTime dateTime = QDateTime::fromString(timeData, Qt::ISODate);
+
+            if (dateTime.isValid()) {
+                series->append(dateTime.toMSecsSinceEpoch(), concentration);
+                pollutantNames.append(pollutant);
+                found = true;
+            }
         }
     }
 
-    return popData;
+    if (found) {
+        QChart *chart = new QChart();
+        chart->addSeries(series);
+
+        // Customize axes
+        QDateTimeAxis *xAxis = new QDateTimeAxis();
+        xAxis->setFormat("dd MMM yyyy hh:mm:ss");
+        xAxis->setTitleText("Time");
+        chart->addAxis(xAxis, Qt::AlignBottom);
+        series->attachAxis(xAxis);
+
+        QValueAxis *yAxis = new QValueAxis();
+        yAxis->setTitleText("Concentration");
+        yAxis->setLabelFormat("%.2f");
+        chart->addAxis(yAxis, Qt::AlignLeft);
+        series->attachAxis(yAxis);
+
+        // Color-code data points based on concentration levels
+        for (int i = 0; i < series->count(); ++i) {
+            QPointF point = series->at(i);
+            double concentration = point.y();
+            QString pollutantName = pollutantNames.at(i);
+            QColor color;
+
+
+            if (concentration < safeLevel) {
+                color = Qt::green; // Safe level
+            } else if (concentration < cautionLevel) {
+                color = Qt::yellow; // Caution level
+            } else if (concentration > dangerLevel) {
+                color = Qt::red; // danger level
+            } else {
+                color = QColorConstants::Svg::orange;
+            }
+
+            QScatterSeries *scatter = new QScatterSeries();
+            scatter->append(point);
+            scatter->setColor(color);
+
+        // gets the thresholds of the points being hovered on
+        connect(scatter, &QScatterSeries::hovered, this, [this, pollutantName, concentration, safeLevel, cautionLevel, dangerLevel] 
+        (const QPointF &hoveredPoint, bool state) { 
+            if (state) { // Show tooltip only when hovering
+                QString riskLevel;
+                if (concentration < safeLevel) {
+                    riskLevel = "Safe";
+                } else if (concentration < cautionLevel) {
+                    riskLevel = "Caution";
+                } else if (concentration > dangerLevel) {
+                    riskLevel = "Danger";
+                } else {
+                    riskLevel = "Risk";
+                }
+
+                QString message = "Pollutant: " + pollutantName + "\nConcentration: " + QString::number(concentration) + "\nRisk Level: " + riskLevel;
+                QToolTip::showText(QCursor::pos(), message);
+            } else {
+                QToolTip::hideText(); // Hide tooltip when not hovering
+            }
+        });
+
+            chart->addSeries(scatter);
+            scatter->attachAxis(xAxis);
+            scatter->attachAxis(yAxis);
+        }
+
+        // Display the chart in the chartView
+        if (!chartView) {
+            chartView = new QChartView(chart, this);
+            mainLayout->addWidget(chartView); // Add chartView to the layout
+        } else {
+            chartView->setChart(chart); // Replace the existing chart
+        }
+
+    chartView->setVisible(true);
+    }
 }

@@ -4,11 +4,13 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QHeaderView>
+#include <QToolTip>
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QValueAxis>
 #include <QtCharts/QScatterSeries>
 #include <QtCharts/QDateTimeAxis>
+
 
 OverviewPage::OverviewPage(QWidget *parent) : QWidget(parent) {
     mainLayout = new QVBoxLayout(this);
@@ -92,27 +94,22 @@ void OverviewPage::searchPollutant() {
     bool found = false;
 
     // Define concentration thresholds for color-coding
-    double safeLevel = 0.0, cautionLevel = 0.0, dangerLevel = 0.0;
+    double safeLevel = 0.0, dangerLevel = 0.0;
     if (searchTerm == "Nitrate-N") {
         safeLevel = 10.0;
-        cautionLevel = 50.0;
-        dangerLevel = 100.0;
+        dangerLevel = 20.0;
     } else if (searchTerm == "Phosphate") {
         safeLevel = 0.1;
-        cautionLevel = 0.5;
-        dangerLevel = 1.0;
+        dangerLevel = 2.0;
     } else if (searchTerm == "Mercury - Hg") {
-        safeLevel = 0.002;
-        cautionLevel = 0.05;
-        dangerLevel = 0.1;
+        safeLevel = 2.0;
+        dangerLevel = 10.0;
     } else if (searchTerm == "Lead - as Pb") {
-        safeLevel = 0.015;
-        cautionLevel = 0.05;
-        dangerLevel = 0.1;
+        safeLevel = 5.0;
+        dangerLevel = 15.0;
     } else if (searchTerm == "Chloroform") {
-        safeLevel = 0.08;
-        cautionLevel = 0.2;
-        dangerLevel = 0.4;
+        safeLevel = 70.0;
+        dangerLevel = 200.0;
     }
 
     // Iterate through the rows to find the matching pollutant and append data to the series
@@ -157,17 +154,37 @@ void OverviewPage::searchPollutant() {
 
             if (concentration < safeLevel) {
                 color = Qt::green; // Safe level
-            } else if (concentration < cautionLevel) {
-                color = Qt::yellow; // Caution level
             } else if (concentration > dangerLevel) {
                 color = Qt::red; // danger level
             } else {
-                color = QColorConstants::Svg::orange;
+                color = QColorConstants::Svg::orange; //caution level
             }
 
             QScatterSeries *scatter = new QScatterSeries();
             scatter->append(point);
             scatter->setColor(color);
+
+
+        // gets the thresholds of the points being hovered on
+        connect(scatter, &QScatterSeries::hovered, this, [this, concentration, safeLevel, dangerLevel] 
+        (const QPointF &hoveredPoint, bool state) { 
+            if (state) { // Show tooltip only when hovering
+                QString riskLevel;
+                if (concentration < safeLevel) {
+                    riskLevel = "Safe";
+                } else if (concentration > dangerLevel) {
+                    riskLevel = "Danger";
+                } else{
+                    riskLevel = "Caution";
+                }
+
+                QString message = "Concentration: " + QString::number(concentration) + "\nRisk Level: " + riskLevel;
+                QToolTip::showText(QCursor::pos(), message);
+            } else {
+                QToolTip::hideText(); // Hide tooltip when not hovering
+            }
+        });
+
             chart->addSeries(scatter);
             scatter->attachAxis(xAxis);
             scatter->attachAxis(yAxis);

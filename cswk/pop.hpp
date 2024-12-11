@@ -31,14 +31,12 @@ private slots:
     void HealthRiskPopup();
     void MonitoringPopup();
     void loadCSV();
+    void createPOPChart();
 
 private:
-    void createPOPChart();
-    void updateChart();
-    std::vector<POPData> getPOPData(); //retrieving data from the model 
-
     PollutantModel model;
     QChartView *chartView;
-    QPushButton *loadCSVButton;
+    QVBoxLayout *mainLayout; 
     QLabel *fileInfo;
+    QString pollutant;
 };
