@@ -22,9 +22,9 @@
         make
         ```
         - Run the application:
-      ```bash
-      ./[application-executable-name]
-      ```
+        ```bash
+        ./cw3
+        ```
 
 - **File Structure**:
     - **Folders**:
