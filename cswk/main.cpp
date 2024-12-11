@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 
     //to check for spanish make QLocale::Spanish
     //QLocale::system() for user's local
-    if (trn.load(QLocale::Spanish, "translations", "_", translationDir)) {
+    if (trn.load(QLocale::system(), "translations", "_", translationDir)) {
         app.installTranslator(&trn);
     } 
 
